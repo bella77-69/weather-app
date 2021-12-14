@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import "./App.css";
-import axios from "axios";
+import { api_key, api_base } from "./apis/config";
 
-const api = {
-  key: "b7c7104f42e743486d6b8cc39691dacc",
-  base: "https://api.openweathermap.org/data/2.5/",
-};
 
 export default function App() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
 
   const search = (event) => {
+    
     if (event.key === "Enter") {
-      axios
-        .get(`${api.base}weather?q=${query}&units=metric&appid=${api.key}`)
-        .then((res) => res.json())
-        .then((result) => {
-          setWeather(result);
+      fetch(`${api_base}weather?q=${query}&appid=${api_key}`)
+    
+        // .then((response) => response.json())
+        .then((response) => {
+          let resp = JSON.stringify(response)
+          setWeather(response);
           setQuery("");
-          console.log(result);
-        });
-    }
-  };
+          console.log(response);
+          response = JSON.parse(resp)
+         
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }};
+  
 
   const dateBuilder = (d) => {
     let months = [
@@ -62,8 +65,8 @@ export default function App() {
       className={
         typeof weather.main != "undefined"
           ? weather.main.temp > 16
-            ? "App warm"
-            : "App"
+            ? "App .warm"
+            : ".App"
           : "App"
       }
     >
