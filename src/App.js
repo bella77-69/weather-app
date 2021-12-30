@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { api_key, api_base } from "./apis/config";
-
+import axios from "axios";
 
 export default function App() {
   const [query, setQuery] = useState('');
@@ -10,8 +10,8 @@ export default function App() {
   const search = (event) => {
     
     if (event.key === "Enter") {
-      fetch(`${api_base}weather?q=${query}&appid=${api_key}`)
     
+      fetch(`${api_base}weather?q=${query}&appid=${api_key}`)
         // .then((response) => response.json())
         .then((response) => {
           let resp = JSON.stringify(response)
@@ -76,7 +76,7 @@ export default function App() {
             type="text"
             className="search-bar"
             placeholder="Search..."
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(event) => setQuery(event.target.value)}
             value={query}
             onKeyPress={search}
           />
